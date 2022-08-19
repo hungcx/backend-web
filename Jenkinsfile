@@ -1,19 +1,22 @@
 pipeline {
-  agent { docker { image 'python:3.10-alpine' } }
+  agent none
 
   environment {
     TESTING_NAME = 'hihi'
   }
 
   stages {
-    stage('Build') {
+    stage('Testing') {
+      agent { docker { image 'python:3.10-alpine' } }
       steps {
-        sh 'python --version'
+        echo 'python --version'
       }
     }
-    stage('Testing') {
+    stage('Build') {
+      agent any
       steps {
-        echo 'Testing...${Testing}'
+        sh 'docker build -t hihi:lastest .'
+        sh 'docker image ls'
       }
     }
     stage('Deploy') {
